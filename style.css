@@ -1,0 +1,119 @@
+/* General Styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #3498db, #8e44ad, #f39c12, #1abc9c, #16a085); /* Vibrant and engaging gradient */
+    background-size: 500% 500%;
+    animation: gradientBG 15s ease infinite; /* Slower animation for smoothness */
+    color: #f0f0f0; /* Light text color for contrast */
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+#container {
+    background: rgba(0, 0, 0, 0.7); /* Darker container background with transparency */
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.6); /* Subtle shadow for depth */
+    max-width: 450px;
+}
+
+#title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* Shadow for added depth */
+}
+
+#board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    background-color: rgba(255, 255, 255, 0.4); /* Slightly transparent light background */
+    padding: 20px;
+    border-radius: 20px;
+    width: 270px;
+    height: 270px;
+    margin: auto;
+}
+
+.tictactoeBox {
+    width: 85px;
+    height: 85px;
+    background: rgba(255, 255, 255, 0.5); /* Semi-transparent white background for grid boxes */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    font-weight: bold;
+    color: #333; /* Darker text for visibility */
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.tictactoeBox:hover {
+    background: rgba(255, 255, 255, 0.6); /* Slight hover effect for interactivity */
+    transform: scale(1.05);
+}
+
+#playerTurn {
+    margin-top: 25px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #ffffff; /* White text for contrast */
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+    background-color: #4caf50; /* Lively green background */
+    padding: 10px 20px;
+    border-radius: 12px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 300px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+}
+
+#playerTurn:hover {
+    transform: scale(1.05);
+    background-color: #388e3c;
+}
+
+#show {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+button {
+    background: #4a90e2; /* Soft blue for buttons */
+    color: #f0f0f0;
+    font-size: 1.2rem;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+button:hover {
+    background: #357ab7; /* Slightly darker blue for button hover */
+    transform: scale(1.05);
+}
+
+.endGame {
+    pointer-events: none;
+    opacity: 0.5;
+}
