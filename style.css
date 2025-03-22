@@ -5,6 +5,7 @@ body {
     background-size: 500% 500%;
     animation: gradientBG 15s ease infinite; /* Slower animation for smoothness */
     color: #f0f0f0; /* Light text color for contrast */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
     text-align: center;
     display: flex;
     justify-content: center;
@@ -20,7 +21,7 @@ body {
 }
 
 #container {
-    background: rgba(0, 0, 0, 0.7); /* Darker container background with transparency */
+    background: rgba(0, 0, 0, 0.3); /* Darker container background with transparency */
     padding: 25px;
     border-radius: 20px;
     box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.6); /* Subtle shadow for depth */
@@ -38,7 +39,7 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
-    background-color: rgba(255, 255, 255, 0.4); /* Slightly transparent light background */
+    background-color: rgba(255, 255, 255, 0.2); /* Slightly transparent light background */
     padding: 20px;
     border-radius: 20px;
     width: 270px;
@@ -60,6 +61,7 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
 .tictactoeBox:hover {
@@ -90,7 +92,7 @@ body {
 }
 
 #show {
-    display: flex;
+    display: none;
     justify-content: center;
     gap: 15px;
     margin-top: 25px;
@@ -99,6 +101,7 @@ body {
 button {
     background: #4a90e2; /* Soft blue for buttons */
     color: #f0f0f0;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
     font-size: 1.2rem;
     padding: 14px 20px;
     border: none;
@@ -117,3 +120,106 @@ button:hover {
     pointer-events: none;
     opacity: 0.5;
 }
+
+/* highlight the winning tiles */
+.highlight {
+    background-color: yellow !important;
+    color: black;
+    font-weight: bold;
+    transition: background-color 0.5s ease-in-out;
+}
+
+/* dim the losing tiles */
+.dimmed {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: gray;
+    transition: background-color 0.5s ease-in-out;
+}
+
+/* glowing and breathing effect for winning tiles */
+@keyframes pulseEffect {
+    0% {
+        transform: scale(1);
+        background-color: yellow;
+        box-shadow: 0 0 10px rgba(255, 255, 0, 0.8);
+    }
+    50% {
+        transform: scale(1.1);
+        background-color: gold;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 1);
+    }
+    100% {
+        transform: scale(1);
+        background-color: yellow;
+        box-shadow: 0 0 10px rgba(255, 255, 0, 0.8);
+    }
+}
+
+.highlight {
+    background-color: yellow !important;
+    color: black;
+    font-weight: bold;
+    animation: pulseEffect 1s infinite ease-in-out;
+    transition: background-color 0.5s ease-in-out;
+}
+
+.dimmed {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: gray;
+    transition: background-color 0.5s ease-in-out;
+}
+
+/* glowing and breathing effect for the winning player status */
+@keyframes glowingPulse {
+    0% {
+        transform: scale(1);
+        color: white;
+        text-shadow: 0 0 5px rgba(255, 223, 0, 0.8), 0 0 10px rgba(255, 215, 0, 0.6);
+    }
+    25% {
+        transform: scale(1.2);
+        color: #ffcc00;
+        text-shadow: 0 0 20px rgba(255, 223, 0, 1), 0 0 40px rgba(255, 215, 0, 0.9);
+    }
+    50% {
+        transform: scale(1.05);
+        color: #ffd700;
+        text-shadow: 0 0 15px rgba(255, 215, 0, 0.9), 0 0 30px rgba(255, 215, 0, 0.7);
+    }
+    75% {
+        transform: scale(1.1);
+        color: gold;
+        text-shadow: 0 0 25px rgba(255, 223, 0, 1), 0 0 50px rgba(255, 223, 0, 0.8);
+    }
+    100% {
+        transform: scale(1);
+        color: white;
+        text-shadow: 0 0 5px rgba(255, 223, 0, 0.8), 0 0 10px rgba(255, 215, 0, 0.6);
+    }
+}
+
+.win-text {
+    font-size: 2.5rem;
+    font-weight: bold;
+    animation: glowingPulse 1.8s infinite ease-in-out;
+    letter-spacing: 3px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+.play-again {
+    display: block;
+    font-size: 1rem;
+    color: #ffcc00;
+    font-weight: bold;
+    margin-top: 5px;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: color 0.3s ease-in-out;
+}
+
+.play-again:hover {
+    color: #ffd700;
+}
+

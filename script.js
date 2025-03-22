@@ -39,11 +39,11 @@ function addMove(element, boxNumber){
     if(!specificGrid.textContent){
         if(playerTurn1){        
             specificGrid.textContent = "X";
-            playerTurn.textContent = "Player O to move"
+            playerTurn.innerHTML = `Player O to move <br> <span class="play-again">or click to start again</span>`
             playerTurn1 = false;
         } else {
             specificGrid.textContent = "O";
-            playerTurn.textContent = "Player X to move"
+            playerTurn.innerHTML = `Player X to move <br> <span class="play-again">or click to start again</span>`
             playerTurn1 = true;
         }
     }
@@ -87,53 +87,63 @@ function updateState(boardCopy){
 
 // Winner check function with alert
 function checkEndGame(gameBoard) {
+    let winningCells = [];
+
     // Check rows
     for (let i = 0; i < 3; i++) {
         if (gameBoard[i][0] !== '' && gameBoard[i][0] === gameBoard[i][1] && gameBoard[i][1] === gameBoard[i][2]) {
-            document.getElementById("show").style.display = "block";  
-            playerTurn.textContent = `Player ${gameBoard[i][0]} wins`;
-            // alert(`Player "${gameBoard[i][0]}" wins`);  // Show alert with 'X wins' or 'O wins'
-            document.getElementById("board").classList.add("endGame");
-            return;  // Exit function after showing the winner
+            winningCells = [[i, 0], [i, 1], [i, 2]];
         }
     }
 
     // Check columns
     for (let i = 0; i < 3; i++) {
         if (gameBoard[0][i] !== '' && gameBoard[0][i] === gameBoard[1][i] && gameBoard[1][i] === gameBoard[2][i]) {
-            document.getElementById("show").style.display = "block";  
-            playerTurn.textContent = `Player ${gameBoard[0][i]} wins`;
-            // alert(`Player "${gameBoard[0][i]}" wins`);  // Show alert with 'X wins' or 'O wins'
-            document.getElementById("board").classList.add("endGame");
-            return;  // Exit function after showing the winner
+            winningCells = [[0, i], [1, i], [2, i]];
         }
     }
 
     // Check diagonals
     if (gameBoard[0][0] !== '' && gameBoard[0][0] === gameBoard[1][1] && gameBoard[1][1] === gameBoard[2][2]) {
-        document.getElementById("show").style.display = "block"; 
-        playerTurn.textContent = `Player ${gameBoard[0][0]} wins`; 
-        // alert(`Player "${gameBoard[0][0]}" wins`);  // Show alert with 'X wins' or 'O wins'
-        document.getElementById("board").classList.add("endGame");
-        return;  // Exit function after showing the winner
+        winningCells = [[0, 0], [1, 1], [2, 2]];
     }
     if (gameBoard[0][2] !== '' && gameBoard[0][2] === gameBoard[1][1] && gameBoard[1][1] === gameBoard[2][0]) {
-        document.getElementById("show").style.display = "block"; 
-        playerTurn.textContent = `Player ${gameBoard[0][2]} wins`; 
-        // alert(`Player "${gameBoard[0][2]}" wins`);  // Show alert with 'X wins' or 'O wins'
-        document.getElementById("board").classList.add("endGame");
-        return;  // Exit function after showing the winner
+        winningCells = [[0, 2], [1, 1], [2, 0]];
     }
 
-    // if moves is already 9 and no winner yet, then display "DRAW!"
-    if (moves == 9) {
+    if (winningCells.length > 0) {
+        document.getElementById("show").style.display = "block";  
+        // Apply animation class to playerTurn
+        playerTurn.innerHTML = `Player <span class="win-text">${gameBoard[winningCells[0][0]][winningCells[0][1]]}</span> won! <br> <span class="play-again">Click here to play again</span>`;
+
+
+        // Disable clicking of tiles
+        document.getElementById("board").classList.add("endGame");
+
+        // Highlight winning cells
+        winningCells.forEach(([r, c]) => {
+            let boxNumber = r * 3 + c; // Convert row, col to box number
+            document.getElementById(`box${boxNumber}`).classList.add("highlight");
+        });
+
+        // Dim other cells
+        document.querySelectorAll(".tictactoeBox").forEach(cell => {
+            if (!cell.classList.contains("highlight")) {
+                cell.classList.add("dimmed");
+            }
+        });
+
+        return;
+    }
+
+    // If moves reach 9 and no winner, it's a draw
+    if (moves === 9) {
         document.getElementById("show").style.display = "block";
-        playerTurn.textContent = "It's a DRAW!";
-        // alert ("DRAW!")
+        playerTurn.innerHTML = `It's a DRAW! <br> <span class="play-again">Click here to play again</span>`;
         document.getElementById("board").classList.add("endGame");
     }
-
 }
+
 
 // To decrement every time prev button is clicked
 prev.addEventListener("click", () => {
@@ -152,10 +162,47 @@ next.addEventListener("click", () => {
 });
 
 
-// Reset the game on button click
-reset.addEventListener("click", () => {
-    location.reload();  // This will refresh the page
+// Play Again the game on button click
+playerTurn.addEventListener("click", () => {
+    // Reset the game board array
+    gameBoard = [
+        ['', '', ''],
+        ['', '', ''],
+        ['', '', '']
+    ];
+
+    // Reset each grid on the board
+    document.querySelectorAll(".tictactoeBox").forEach(cell => {
+        cell.textContent = "";
+        cell.classList.remove("highlight", "dimmed"); // Remove effects
+    });
+
+    // Reset game variables
+    state = [];
+    moves = 0;
+    playerTurn1 = true;
+    currentIndex = 0;
+
+    // Reset player turn display
+    playerTurn.textContent = "Player X to move";
+
+    // Hide the "show" div (if it appears after a win/draw)
+    document.getElementById("show").style.display = "none";
+
+    // Remove endGame class from board (if applied)
+    document.getElementById("board").classList.remove("endGame");
+
+    console.clear(); // Clears console log for a fresh start (optional)
 });
+
+reset.addEventListener("click", () => {
+    let confirmReset = confirm("Are you sure you want to reset the game?");
+    if (confirmReset) {
+        location.reload(); // Refreshes the page only if the player confirms
+    }
+});
+
+
 
 function reflectBoard(index){
     let tempBoard = state[index];
