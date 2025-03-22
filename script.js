@@ -84,15 +84,25 @@ function updateState(boardCopy){
         checkEndGame(gameBoard); //call checkWinner function after each move
     // }, 100); // Delay by 100ms (0.1 seconds)
 }
+//---------------------------------------------------------------------------------------------------------------------------------
+// Initializes scores
+let scoreX = 0;
+let scoreO = 0;
 
-// Winner check function with alert
+// Get score DOM elements
+let scoreXElement = document.getElementById("scoreX");
+let scoreOElement = document.getElementById("scoreO");
+
+// Winner check function to update scores
 function checkEndGame(gameBoard) {
     let winningCells = [];
+    let winner = null;
 
     // Check rows
     for (let i = 0; i < 3; i++) {
         if (gameBoard[i][0] !== '' && gameBoard[i][0] === gameBoard[i][1] && gameBoard[i][1] === gameBoard[i][2]) {
             winningCells = [[i, 0], [i, 1], [i, 2]];
+            winner = gameBoard[i][0];
         }
     }
 
@@ -100,29 +110,30 @@ function checkEndGame(gameBoard) {
     for (let i = 0; i < 3; i++) {
         if (gameBoard[0][i] !== '' && gameBoard[0][i] === gameBoard[1][i] && gameBoard[1][i] === gameBoard[2][i]) {
             winningCells = [[0, i], [1, i], [2, i]];
+            winner = gameBoard[0][i];
         }
     }
 
     // Check diagonals
     if (gameBoard[0][0] !== '' && gameBoard[0][0] === gameBoard[1][1] && gameBoard[1][1] === gameBoard[2][2]) {
         winningCells = [[0, 0], [1, 1], [2, 2]];
+        winner = gameBoard[0][0];
     }
     if (gameBoard[0][2] !== '' && gameBoard[0][2] === gameBoard[1][1] && gameBoard[1][1] === gameBoard[2][0]) {
         winningCells = [[0, 2], [1, 1], [2, 0]];
+        winner = gameBoard[0][2];
     }
 
-    if (winningCells.length > 0) {
-        document.getElementById("show").style.display = "block";  
-        // Apply animation class to playerTurn
-        playerTurn.innerHTML = `Player <span class="win-text">${gameBoard[winningCells[0][0]][winningCells[0][1]]}</span> won! <br> <span class="play-again">Click here to play again</span>`;
-
+    if (winner) {
+        document.getElementById("show").style.display = "block";
+        playerTurn.innerHTML = `Player <span class="win-text">${winner}</span> won! <br> <span class="play-again">Click here to play again</span>`;
 
         // Disable clicking of tiles
         document.getElementById("board").classList.add("endGame");
 
         // Highlight winning cells
         winningCells.forEach(([r, c]) => {
-            let boxNumber = r * 3 + c; // Convert row, col to box number
+            let boxNumber = r * 3 + c;
             document.getElementById(`box${boxNumber}`).classList.add("highlight");
         });
 
@@ -132,6 +143,15 @@ function checkEndGame(gameBoard) {
                 cell.classList.add("dimmed");
             }
         });
+
+        // Update score
+        if (winner === "X") {
+            scoreX++;
+            scoreXElement.textContent = scoreX;
+        } else if (winner === "O") {
+            scoreO++;
+            scoreOElement.textContent = scoreO;
+        }
 
         return;
     }
@@ -162,9 +182,9 @@ next.addEventListener("click", () => {
 });
 
 
-// Play Again the game on button click
+// Play Again the game on button click without resetting score
 playerTurn.addEventListener("click", () => {
-    // Reset the game board array
+    // Return the game board array to empty board
     gameBoard = [
         ['', '', ''],
         ['', '', ''],
@@ -195,6 +215,7 @@ playerTurn.addEventListener("click", () => {
     console.clear(); // Clears console log for a fresh start (optional)
 });
 
+// Reset button resets everything including score
 reset.addEventListener("click", () => {
     let confirmReset = confirm("Are you sure you want to reset the game?");
     if (confirmReset) {
