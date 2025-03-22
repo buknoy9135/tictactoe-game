@@ -14,7 +14,27 @@ let state = [];
 
 let moves = 0;
 
-let playerTurn1 = true;
+// Randomize the first player
+let playerTurn1 = Math.random() < 0.5; 
+
+// Set initial turn display
+if (playerTurn1) {
+    playerTurn.innerHTML = "Player <span style='color: paleturquoise; font-weight: bold; text-shadow: 0 0 10px paleturquoise, 0 0 20px paleturquoise;'>X</span>'s turn";
+} else {
+    playerTurn.innerHTML = "Player <span style='color: paleturquoise; font-weight: bold; text-shadow: 0 0 10px paleturquoise, 0 0 20px paleturquoise;'>O</span>'s turn";
+}
+
+// Add a note about randomization
+let note = document.createElement("p");
+note.innerHTML = '<span style="color: black; font-weight: bold; text-decoration: underline;">Note:</span> Starting player is random each game.';
+note.style.fontSize = "18px";
+note.style.color = "black";
+note.style.textShadow = "none";
+note.style.marginTop = "5px"; 
+note.style.marginBottom = "5px";
+
+// Append the note below the player turn display
+playerTurn.appendChild(note);
 
 // To track current index (current index)
 let currentIndex = 0;
@@ -39,11 +59,11 @@ function addMove(element, boxNumber){
     if(!specificGrid.textContent){
         if(playerTurn1){        
             specificGrid.textContent = "X";
-            playerTurn.innerHTML = `Player O to move <br> <span class="play-again">or click to start again</span>`
+            playerTurn.innerHTML = "Player <span style='color: paleturquoise; font-weight: bold; text-shadow: 0 0 10px paleturquoise, 0 0 20px paleturquoise;'>O</span>'s turn";
             playerTurn1 = false;
         } else {
             specificGrid.textContent = "O";
-            playerTurn.innerHTML = `Player X to move <br> <span class="play-again">or click to start again</span>`
+            playerTurn.innerHTML = "Player <span style='color: paleturquoise; font-weight: bold; text-shadow: 0 0 10px paleturquoise, 0 0 20px paleturquoise;'>X</span>'s turn";
             playerTurn1 = true;
         }
     }
@@ -200,11 +220,16 @@ playerTurn.addEventListener("click", () => {
     // Reset game variables
     state = [];
     moves = 0;
-    playerTurn1 = true;
     currentIndex = 0;
 
-    // Reset player turn display
-    playerTurn.textContent = "Player X to move";
+    // Randomize the starting player again
+    playerTurn1 = Math.random() < 0.5;
+    if (playerTurn1) {
+        playerTurn.innerHTML = "Player <span style='color: paleturquoise; font-weight: bold; text-shadow: 0 0 10px paleturquoise, 0 0 20px paleturquoise;'>X</span>'s turn";
+
+    } else {
+        playerTurn.innerHTML = "Player <span style='color: paleturquoise; font-weight: bold; text-shadow: 0 0 10px paleturquoise, 0 0 20px paleturquoise;'>O</span>'s turn";
+    }  
 
     // Hide the "show" div (if it appears after a win/draw)
     document.getElementById("show").style.display = "none";
@@ -217,7 +242,7 @@ playerTurn.addEventListener("click", () => {
 
 // Reset button resets everything including score
 reset.addEventListener("click", () => {
-    let confirmReset = confirm("Are you sure you want to reset the game?");
+    let confirmReset = confirm("Are you sure you want to reset the game? It will also reset the score.");
     if (confirmReset) {
         location.reload(); // Refreshes the page only if the player confirms
     }
